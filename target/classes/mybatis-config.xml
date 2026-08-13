@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!--
+        Load database configuration from db.properties.
+        The properties are used as:
+        ${db.driver}
+        ${db.url}
+        ${db.username}
+        ${db.password}
+    -->
+    <properties resource="db.properties"/>
+
+    <!-- MyBatis settings -->
+    <settings>
+
+        <!--
+            Converts database column names such as:
+            first_name
+            into Java properties such as:
+            firstName
+        -->
+        <setting
+                name="mapUnderscoreToCamelCase"
+                value="true"/>
+
+    </settings>
+
+    <!--
+        Automatically create aliases for classes
+        inside the model package.
+    -->
+    <typeAliases>
+
+        <package
+                name="com.crimsonlogic.insurancemanagementsystem.model"/>
+
+    </typeAliases>
+
+    <!-- Database environment -->
+    <environments default="development">
+
+        <environment id="development">
+
+            <!-- JDBC transaction management -->
+            <transactionManager type="JDBC"/>
+
+            <!-- MySQL connection pool -->
+            <dataSource type="POOLED">
+
+                <!-- MySQL JDBC driver -->
+                <property
+                        name="driver"
+                        value="${db.driver}"/>
+
+                <!-- Database URL -->
+                <property
+                        name="url"
+                        value="${db.url}"/>
+
+                <!-- Database username -->
+                <property
+                        name="username"
+                        value="${db.username}"/>
+
+                <!-- Database password -->
+                <property
+                        name="password"
+                        value="${db.password}"/>
+
+            </dataSource>
+
+        </environment>
+
+    </environments>
+
+    <!-- MyBatis XML mapper files -->
+    <mappers>
+
+        <mapper
+                resource="mapper/UserMapper.xml"/>
+
+        <mapper
+                resource="mapper/PolicyMapper.xml"/>
+
+        <mapper
+                resource="mapper/PaymentMapper.xml"/>
+
+        <mapper
+                resource="mapper/ClaimMapper.xml"/>
+
+    </mappers>
+
+</configuration>

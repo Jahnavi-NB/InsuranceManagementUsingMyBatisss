@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crimsonlogic.insurancemanagementsystem.mapper.PolicyMapper">
+    <select id="findAll" resultType="Policy">SELECT * FROM policies ORDER BY name</select>
+    <select id="findById" resultType="Policy">SELECT * FROM policies WHERE id=#{id}</select>
+    <select id="findByCustomer" resultType="Policy">SELECT * FROM policies WHERE customer_id=#{customerId} ORDER BY name</select>
+    <select id="countCustomerPolicy" resultType="int">SELECT COUNT(*) FROM policies WHERE customer_id=#{customerId} AND status='ACTIVE'</select>
+    <select id="findLeastAssignedAgent" resultType="string">SELECT u.id FROM users u WHERE u.role='AGENT' AND u.status='ACTIVE' ORDER BY (SELECT COUNT(*) FROM policies p WHERE p.agent_id=u.id AND p.status='ACTIVE'), u.name LIMIT 1</select>
+    <update id="assignPolicy">UPDATE policies SET customer_id=#{customerId}, agent_id=#{agentId}, premium=#{premium}, premium_status='DUE', status='ACTIVE' WHERE id=#{policyId}</update>
+
+<insert id="insert">INSERT INTO policies(id,name,description,type,coverage_amount,premium,customer_id,agent_id,premium_status,status) VALUES(#{id},#{name},#{description},#{type},#{coverageAmount},#{premium},#{customerId},#{agentId},#{premiumStatus},#{status})</insert>
+    <update id="updatePremiumStatus">UPDATE policies SET premium_status=#{status} WHERE id=#{id}</update>
+    <select id="countAssignedPolicies"
+            parameterType="string"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM policies
+        WHERE agent_id = #{agentId}
+
+    </select>
+
+</mapper>
