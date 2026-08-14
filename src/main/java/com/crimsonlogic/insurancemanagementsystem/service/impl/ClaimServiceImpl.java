@@ -61,10 +61,17 @@ public class ClaimServiceImpl implements ClaimService {
     private void decide(String id, String agent, ClaimStatus st) throws Exception {
         try (SqlSession s = MyBatisUtil.openSession()) {
             Claim c = s.getMapper(ClaimMapper.class).findById(id);
-            if (c == null) throw new ClaimNotFoundException("Claim not found.");
-            if (!agent.equals(c.getAgentId())) throw new AuthorizationException("Claim belongs to another agent.");
-            if (c.getStatus() != ClaimStatus.SUBMITTED) throw new ClaimProcessingException("Only submitted claims can be processed.");
-            s.getMapper(ClaimMapper.class).updateStatus(id, st);
+
+            if (c == null)
+                throw new ClaimNotFoundException("Claim not found.");
+
+            if (!agent.equals(c.getAgentId()))
+                throw new AuthorizationException("Claim belongs to another agent.");
+
+            if (c.getStatus() != ClaimStatus.SUBMITTED)
+                throw new ClaimProcessingException("Only submitted claims can be processed.");
+            s.getMapper(ClaimMapper.class).
+                    updateStatus(id, st);
             s.commit();
         }
     }

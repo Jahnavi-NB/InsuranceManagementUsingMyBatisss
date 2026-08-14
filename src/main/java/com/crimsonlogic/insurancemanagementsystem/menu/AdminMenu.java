@@ -20,8 +20,15 @@ public class AdminMenu {
     public void show() {
         while (true) {
             try {
-                System.out.println("\n===== ADMIN MENU =====\n1 Register Employee\n2 Register Agent\n3 View Users\n4 Change User Status\n5 View Policies\n0 Logout");
+                System.out.println("\n===== ADMIN MENU =====\n" +
+                        "1 Register Employee\n" +
+                        "2 Register Agent\n3 " +
+                        "View Users\n" +
+                        "4 Change User Status\n5" +
+                        " View Policies\n6.Generate Reports" +
+                        "\n 0 Logout");
                 String c = scanner.nextLine().trim();
+
                 if (c.equals("0")) return;
                 switch (c) {
                     case "1" -> registerEmployee();
@@ -29,6 +36,7 @@ public class AdminMenu {
                     case "3" -> users();
                     case "4" -> status();
                     case "5" -> policies();
+                    case "6" -> streamReports();
                     default -> System.out.println("Invalid choice. Enter 0-5.");
                 }
             } catch (Exception e) {
@@ -39,19 +47,24 @@ public class AdminMenu {
     private void registerEmployee() {
         while (true) {
             try {
-                Employee e = new Employee(UUID.randomUUID().toString(), read("Name"), read("Username"), read("Password"), read("Email"), read("Phone"), Status.ACTIVE);
+                Employee e = new Employee(UUID.randomUUID()
+                        .toString(), read("Name"), read("Username"), read("Password"), read("Email"), read("Phone"), Status.ACTIVE);
                 userService.registerEmployee(e);
                 System.out.println("Employee registered successfully.");
                 return;
             } catch (Exception e) {
-                System.out.println("Invalid employee data: "+e.getMessage()+" Please enter again.");
+                System.out.println("Invalid employee data: "
+                        +e.getMessage()+" Please enter again.");
             }
         }
     }
     private void registerAgent() {
         while (true) {
             try {
-                Agent a = new Agent(UUID.randomUUID().toString(), read("Name"), read("Username"), read("Password"), read("Email"), read("Phone"), Status.ACTIVE);
+                Agent a = new Agent(UUID.randomUUID()
+                        .toString(), read("Name"),
+                        read("Username"), read("Password"),
+                        read("Email"), read("Phone"), Status.ACTIVE);
                 userService.registerAgent(a);
                 System.out.println("Agent registered successfully.");
                 return;
@@ -64,7 +77,9 @@ public class AdminMenu {
         List<String[]> r = new ArrayList<>();
         try {
             for (User u:userService.findAll())r.add(new String[] {
-                u.getId(), u.getName(), u.getRole().name(), u.getUsername(), u.getStatus().name()
+                u.getId(), u.getName(),
+                            u.getRole().name(), u.getUsername(),
+                            u.getStatus().name()
             }
             );
         } catch (DatabaseOperationException e) {
@@ -80,14 +95,18 @@ public class AdminMenu {
         while (true) {
             try {
                 String id = read("User ID");
-                Status st = Status.valueOf(read("Status ACTIVE/INACTIVE").toUpperCase());
+                Status st = Status.valueOf(read("Status ACTIVE/INACTIVE")
+                        .toUpperCase());
                 userService.changeStatus(id, st);
                 System.out.println("Status updated successfully.");
                 return;
+
             } catch (IllegalArgumentException e) {
-                System.out.println("Status must be ACTIVE or INACTIVE. Please try again.");
+                System.out.println("Status must be ACTIVE or " +
+                        "INACTIVE. Please try again.");
             } catch (Exception e) {
-                System.out.println("Unable to update status: "+e.getMessage()+" Please try again.");
+                System.out.println("Unable to update status: "
+                        +e.getMessage()+" Please try again.");
             }
         }
     }
@@ -110,5 +129,12 @@ public class AdminMenu {
     private String read(String label) {
         System.out.print(label+": ");
         return scanner.nextLine().trim();
+    }
+    private void streamReports() {
+
+        StreamReportMenu menu =
+                new StreamReportMenu(scanner);
+
+        menu.show(user);
     }
 }

@@ -19,13 +19,18 @@ public class EmployeeMenu {
     public void show() {
         while (true) {
             try {
-                System.out.println("\n===== EMPLOYEE MENU =====\n1 Register Customer\n2 View Customers\n3 Change Customer Status\n0 Logout");
+                System.out.println("\n===== EMPLOYEE MENU =====\n" +
+                        "1 Register Customer\n" +
+                        "2 View Customers\n" +
+                        "3 Change Customer Status\n" +
+                        "4.Generate Reports \n 0 Logout");
                 String c = scanner.nextLine().trim();
                 if (c.equals("0")) return;
                 switch (c) {
                     case "1" -> register();
                     case "2" -> view();
                     case "3" -> status();
+                    case "4" -> streamReports();
                     default -> System.out.println("Invalid choice. Enter 0-3.");
                 }
             } catch (Exception e) {
@@ -63,18 +68,30 @@ public class EmployeeMenu {
     private void status() {
         while (true) {
             try {
-                userService.changeStatus(read("Customer ID"), Status.valueOf(read("Status ACTIVE/INACTIVE").toUpperCase()));
+                userService.changeStatus(read("Customer ID"),
+                        Status.valueOf(read("Status ACTIVE/INACTIVE").toUpperCase()));
                 System.out.println("Status updated successfully.");
                 return;
+
             } catch (IllegalArgumentException e) {
-                System.out.println("Status must be ACTIVE or INACTIVE. Please try again.");
+
+                System.out.println("Status must be ACTIVE " +
+                        "or INACTIVE. Please try again.");
             } catch (Exception e) {
-                System.out.println("Unable to update status: "+e.getMessage()+" Please try again.");
+                System.out.println("Unable to update status: "
+                        +e.getMessage()+" Please try again.");
             }
         }
     }
     private String read(String label) {
         System.out.print(label+": ");
         return scanner.nextLine().trim();
+    }
+    private void streamReports() {
+
+        StreamReportMenu menu =
+                new StreamReportMenu(scanner);
+
+        menu.show(user);
     }
 }

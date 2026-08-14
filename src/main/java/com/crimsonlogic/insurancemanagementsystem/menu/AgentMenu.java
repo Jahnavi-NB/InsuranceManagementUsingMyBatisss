@@ -17,13 +17,19 @@ public class AgentMenu {
     public void show() {
         while (true) {
             try {
-                System.out.println("\n===== AGENT MENU =====\n1 View My Claims\n2 Approve Claim\n3 Reject Claim\n0 Logout");
+                System.out.println("\n===== AGENT MENU =====\n" +
+                        "1 View My Claims\n" +
+                        "2 Approve Claim\n" +
+                        "3.Reject Claim\n" +
+                        "4.Generate Reports\n 0 Logout");
+
                 String c = scanner.nextLine().trim();
                 if (c.equals("0")) return;
                 switch (c) {
                     case "1" -> view();
                     case "2" -> decide(true);
                     case "3" -> decide(false);
+                    case "4" -> streamReports();
                     default -> System.out.println("Invalid choice. Enter 0-3.");
                 }
             } catch (Exception e) {
@@ -61,5 +67,12 @@ public class AgentMenu {
                 System.out.println("Unable to process claim: "+e.getMessage()+" Please try again.");
             }
         }
+    }
+    private void streamReports() {
+
+        StreamReportMenu menu =
+                new StreamReportMenu(scanner);
+
+        menu.show(user);
     }
 }

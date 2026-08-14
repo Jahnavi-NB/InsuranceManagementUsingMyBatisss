@@ -21,8 +21,18 @@ public class CustomerMenu {
     public void show() {
         while (true) {
             try {
-                System.out.println("\n===== CUSTOMER MENU =====\n1 View Policies\n2 Take Policy\n3 Pay Premium\n4 Payment History\n5 Submit Claim\n6 View My Policies\n7 View My Claims\n0 Logout");
+                System.out.println("\n===== CUSTOMER MENU =====\n" +
+                        "1 View Policies\n" +
+                        "2 Take Policy\n" +
+                        "3 Pay Premium\n" +
+                        "4 Payment History\n" +
+                        "5 Submit Claim\n" +
+                        "6 View My Policies" +
+                        "\n7 View My Claims\n" +
+                        "8. Generate Reports \n 0 Logout");
                 String c = scanner.nextLine().trim();
+
+
                 if (c.equals("0")) return;
                 switch (c) {
                     case "1" -> policies();
@@ -32,6 +42,7 @@ public class CustomerMenu {
                     case "5" -> claim();
                     case "6" -> myPolicies();
                     case "7" -> claims();
+                    case "8" -> streamReports();
                     default -> System.out.println("Invalid choice. Enter 0-7.");
                 }
             } catch (Exception e) {
@@ -227,5 +238,12 @@ public class CustomerMenu {
     private String read(String label) {
         System.out.print(label+": ");
         return scanner.nextLine().trim();
+    }
+    private void streamReports() {
+
+        StreamReportMenu menu =
+                new StreamReportMenu(scanner);
+
+        menu.show(user);
     }
 }

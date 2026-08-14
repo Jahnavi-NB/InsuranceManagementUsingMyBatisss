@@ -8,6 +8,21 @@ public abstract class User {
     protected Status status = Status.ACTIVE;
     public User() {
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                '}';
+    }
+
     public User(String id, String name, String username, String password, String email, String phone, Role role, Status status) {
         this.id = id;
         this.name = name;

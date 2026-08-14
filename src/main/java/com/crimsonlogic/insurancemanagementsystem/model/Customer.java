@@ -6,7 +6,14 @@ public class Customer extends User {
     private Integer age;
     public Customer() {
     }
-    public Customer(String id, String name, String username, String password, String email, String phone, int age, Status status) {
+    public Customer(String id,
+                    String name,
+                    String username,
+                    String password,
+                    String email,
+                    String phone,
+                    int age,
+                    Status status) {
         super(id, name, username, password, email, phone, Role.CUSTOMER, status);
         this.age = age;
     }

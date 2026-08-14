@@ -10,10 +10,14 @@ public interface PolicyMapper {
     Policy findById(@Param("id") String id);
     List<Policy> findByCustomer(@Param("customerId") String customerId);
     void insert(Policy policy);
-    void assignPolicy(@Param("policyId") String policyId, @Param("customerId") String customerId, @Param("agentId") String agentId, @Param("premium") double premium);
+    void assignPolicy(@Param("policyId") String policyId,
+                      @Param("customerId") String customerId,
+                      @Param("agentId") String agentId,
+                      @Param("premium") double premium);
     int countAssignedPolicies(@Param("agentId") String agentId);
 
     int countCustomerPolicy(@Param("customerId") String customerId);
     String findLeastAssignedAgent();
-    void updatePremiumStatus(@Param("id") String id, @Param("status") PremiumStatus status);
+    void updatePremiumStatus(@Param("id") String id,
+                             @Param("status") PremiumStatus status);
 }

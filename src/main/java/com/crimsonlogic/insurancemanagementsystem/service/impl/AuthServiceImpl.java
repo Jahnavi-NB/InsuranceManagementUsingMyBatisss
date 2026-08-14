@@ -10,7 +10,8 @@ import org.apache.ibatis.session.SqlSession;
 public class AuthServiceImpl implements AuthService {
     public Optional<User> login(String u, String p) {
         try (SqlSession s = MyBatisUtil.openSession()) {
-            return Optional.ofNullable(s.getMapper(UserMapper.class).findByUsername(u, p));
+            return Optional.ofNullable(s.getMapper(UserMapper.class)
+                            .findByUsername(u, p));
         }
     }
 }
