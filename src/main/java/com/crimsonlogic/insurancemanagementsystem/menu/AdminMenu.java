@@ -47,29 +47,62 @@ public class AdminMenu {
     private void registerEmployee() {
         while (true) {
             try {
-                Employee e = new Employee(UUID.randomUUID()
-                        .toString(), read("Name"), read("Username"), read("Password"), read("Email"), read("Phone"), Status.ACTIVE);
+
+                Employee e = new Employee(
+                        UUID.randomUUID().toString(),
+                        read("Name"),
+                        read("Username"),
+                        read("Password"),
+                        read("Email"),
+                        read("Phone"),
+                        Integer.parseInt(read("Age")),
+                        Status.ACTIVE
+                );
+
                 userService.registerEmployee(e);
+
                 System.out.println("Employee registered successfully.");
                 return;
+
             } catch (Exception e) {
-                System.out.println("Invalid employee data: "
-                        +e.getMessage()+" Please enter again.");
+                System.out.println(
+                        "Invalid employee data: "
+                                + e.getMessage()
+                                + " Please enter again."
+                );
             }
         }
     }
+
     private void registerAgent() {
         while (true) {
             try {
-                Agent a = new Agent(UUID.randomUUID()
-                        .toString(), read("Name"),
-                        read("Username"), read("Password"),
-                        read("Email"), read("Phone"), Status.ACTIVE);
+
+                Agent a = new Agent(
+                        UUID.randomUUID().toString(),
+                        read("Name"),
+                        read("Username"),
+                        read("Password"),
+                        read("Email"),
+                        read("Phone"),
+                        Integer.parseInt(read("Age")),
+                        Status.ACTIVE
+                );
+
                 userService.registerAgent(a);
+
                 System.out.println("Agent registered successfully.");
                 return;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Age must be a number. Please enter again.");
+
             } catch (Exception e) {
-                System.out.println("Invalid agent data: "+e.getMessage()+" Please enter again.");
+                System.out.println(
+                        "Invalid agent data: " +
+                                e.getMessage() +
+                                " Please enter again."
+                );
             }
         }
     }

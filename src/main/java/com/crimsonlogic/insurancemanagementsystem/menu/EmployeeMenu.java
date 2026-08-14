@@ -42,14 +42,34 @@ public class EmployeeMenu {
         while (true) {
             try {
                 int age = Integer.parseInt(read("Age"));
-                Customer c = new Customer(UUID.randomUUID().toString(), read("Name"), read("Username"), read("Password"), read("Email"), read("Phone"), age, Status.ACTIVE);
+
+                Customer c = new Customer(
+                        UUID.randomUUID().toString(),
+                        read("Name"),
+                        read("Username"),
+                        read("Password"),
+                        read("Email"),
+                        read("Phone"),
+                        age,
+                        Status.ACTIVE
+                );
+
                 userService.registerCustomer(c);
+
                 System.out.println("Customer registered successfully.");
                 return;
+
             } catch (NumberFormatException e) {
-                System.out.println("Age must be a whole number. Please enter the customer again.");
+                System.out.println(
+                        "Age must be a whole number. Please enter the customer again."
+                );
+
             } catch (Exception e) {
-                System.out.println("Invalid customer data: "+e.getMessage()+" Please enter again.");
+                System.out.println(
+                        "Invalid customer data: "
+                                + e.getMessage()
+                                + " Please enter again."
+                );
             }
         }
     }

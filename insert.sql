@@ -1,0 +1,131 @@
+CREATE DATABASE IF NOT EXISTS insurance_management;
+USE insurance_management;
+
+
+CREATE TABLE users (
+    id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(20) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    age INT NOT NULL
+);
+CREATE TABLE policies(id VARCHAR(60) PRIMARY KEY,
+                    name VARCHAR(100) NOT NULL,
+                    description VARCHAR(255),
+                    type ENUM('LIFE','HEALTH','TRAVEL','HOME','VEHICLE') NOT NULL,
+                    coverage_amount DECIMAL(12,2) NOT NULL,
+                    premium DECIMAL(12,2) NOT NULL,
+                    customer_id VARCHAR(60),
+                    agent_id VARCHAR(60),
+                    premium_status ENUM('DUE','PAID') NOT NULL DEFAULT 'DUE',
+                    status ENUM('ACTIVE','INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+                    FOREIGN KEY(customer_id) REFERENCES users(id),
+                    FOREIGN KEY(agent_id) REFERENCES users(id));
+
+
+CREATE TABLE payments(id VARCHAR(60) PRIMARY KEY,
+                      policy_id VARCHAR(60) NOT NULL,
+                      customer_id VARCHAR(60) NOT NULL,
+                      amount DECIMAL(12,2) NOT NULL,
+                      method ENUM('CASH','CARD','UPI','NET_BANKING') NOT NULL,
+                      status ENUM('PENDING','SUCCESS','FAILED') NOT NULL,
+                      paid_at DATETIME,
+                      FOREIGN KEY(policy_id) REFERENCES policies(id),
+                      FOREIGN KEY(customer_id) REFERENCES users(id));
+
+
+CREATE TABLE claims(id VARCHAR(60) PRIMARY KEY,
+                    policy_id VARCHAR(60) NOT NULL,
+                    customer_id VARCHAR(60) NOT NULL,
+                    agent_id VARCHAR(60) NOT NULL,
+                    amount DECIMAL(12,2) NOT NULL,
+                    description VARCHAR(500),
+                    status ENUM('SUBMITTED','APPROVED','REJECTED') NOT NULL,
+                    FOREIGN KEY(policy_id) REFERENCES policies(id),
+                    FOREIGN KEY(customer_id) REFERENCES users(id),
+                    FOREIGN KEY(agent_id) REFERENCES users(id));
+
+
+INSERT INTO users
+(id, name, username, password, email, phone, role, status, age)
+VALUES
+('ADM001', 'System Admin', 'admin', 'admin123',
+ 'admin@crimsonlogic.com', '9000000001', 'ADMIN', 'ACTIVE', 35),
+
+('EMP001', 'Employee One', 'employee', 'emp123',
+ 'employee@crimsonlogic.com', '9000000002', 'EMPLOYEE', 'ACTIVE', 30),
+
+('AG001', 'Rahul', 'rahul', 'agent123',
+ 'rahul@crimsonlogic.com', '9000000003', 'AGENT', 'ACTIVE', 32),
+
+('AG002', 'Priya', 'priya', 'agent123',
+ 'priya@crimsonlogic.com', '9000000004', 'AGENT', 'ACTIVE', 29),
+
+('AG003', 'Kiran', 'kiran', 'agent123',
+ 'kiran@crimsonlogic.com', '9000000005', 'AGENT', 'ACTIVE', 41),
+
+('AG004', 'Sneha', 'sneha', 'agent123',
+ 'sneha@crimsonlogic.com', '9000000006', 'AGENT', 'ACTIVE', 36),
+
+('AG005', 'Vikram', 'vikram', 'agent123',
+ 'vikram@crimsonlogic.com', '9000000007', 'AGENT', 'ACTIVE', 45),
+
+('CUS001', 'Amit', 'amit', 'cust123',
+ 'amit@example.com', '9876543210', 'CUSTOMER', 'ACTIVE', 28);
+                        
+
+
+INSERT INTO policies VALUES('POL001',
+                            'Life Secure',
+                            'Life insurance',
+                            'LIFE',
+                            500000,
+                            10000,
+                            NULL,
+                            'AG001',
+                            'DUE',
+                            'ACTIVE'),
+                            ('POL002',
+                            'Health Shield',
+                            'Health insurance',
+                            'HEALTH',
+                            300000,
+                            6000,
+                            NULL,
+                            'AG002',
+                            'DUE',
+                            'ACTIVE'),
+                            ('POL003',
+                            'Travel Safe',
+                            'Travel insurance',
+                            'TRAVEL',
+                            200000,
+                            4000,
+                            NULL,
+                            'AG003',
+                            'DUE',
+                            'ACTIVE'),
+                            ('POL004',
+                            'Home Protect',
+                            'Home insurance',
+                            'HOME',
+                            1000000,
+                            45000,
+                            NULL,
+                            'AG004',
+                            'DUE',
+                            'ACTIVE'),
+                            ('POL005',
+                            'Vehicle Cover',
+                            'Vehicle insurance',
+                            'VEHICLE',
+                            500000,
+                            22500,
+                            NULL,
+                            'AG005',
+                            'DUE',
+                            'ACTIVE');
