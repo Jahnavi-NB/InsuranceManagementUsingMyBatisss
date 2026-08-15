@@ -2,19 +2,12 @@ package com.crimsonlogic.insurancemanagementsystem.util;
 
 import com.crimsonlogic.insurancemanagementsystem.enums.Role;
 import com.crimsonlogic.insurancemanagementsystem.exception.IdGenerationException;
-import com.crimsonlogic.insurancemanagementsystem.mapper.UserMapper;
 import org.apache.ibatis.session.SqlSession;
 
-import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * Utility class responsible for generating application IDs.
- *
- * Employee  -> EMP001, EMP002, EMP003...
- * Agent     -> AG001, AG002, AG003...
- * Customer  -> CUS001, CUS002, CUS003...
- * Admin     -> ADM001, ADM002...
- */
+// Utility class responsible for generating application IDs.
+
 public final class IdGenerator {
 
     private IdGenerator() {
@@ -22,11 +15,11 @@ public final class IdGenerator {
     }
 
     /**
-     * Generates the next ID for the given role.
+     * Generates a random ID for the given role.
      *
      * @param role    user role
      * @param session MyBatis SQL session
-     * @return generated formatted ID
+     * @return generated random formatted ID
      */
     public static String generateUserId(
             Role role,
@@ -41,21 +34,11 @@ public final class IdGenerator {
 
         String prefix = getPrefix(role);
 
-        UserMapper userMapper =
-                session.getMapper(UserMapper.class);
+        // Generate random 6-digit number
+        int randomNumber = ThreadLocalRandom.current()
+                .nextInt(100000, 1000000);
 
-        Integer lastNumber =
-                userMapper.findLastUserNumber(prefix);
-
-        int nextNumber =
-                Optional.ofNullable(lastNumber)
-                        .orElse(0) + 1;
-
-        return String.format(
-                "%s%03d",
-                prefix,
-                nextNumber
-        );
+        return prefix + randomNumber;
     }
 
     /**

@@ -40,8 +40,12 @@ public class AgentMenu {
     private void view() {
         List<Claim> l = claimService.byAgent(user.getId());
         List<String[]> r = new ArrayList<>();
-        for (Claim c:l)r.add(new String[] {
-            c.getId(), c.getPolicyId(), String.format("%.2f", c.getAmount()), c.getStatus().name()
+
+        for (Claim c:l)
+            r.add(new String[] {
+            c.getId(), c.getPolicyId(),
+                            String.format("%.2f", c.getAmount()),
+                            c.getStatus().name()
         }
         );
         if (r.isEmpty())TableFormatter.empty();
@@ -59,12 +63,18 @@ public class AgentMenu {
                     System.out.println("Claim ID cannot be blank.");
                     break;
                 }
-                if (approve)claimService.approve(id, user.getId());
-                else claimService.reject(id, user.getId());
-                System.out.println("Claim processed successfully.");
+                if (approve){
+                    claimService.approve(id, user.getId());
+                    System.out.println("Claim is Accepted");}
+                else {
+                    claimService.reject(id, user.getId());
+                    System.out.println("Claim is Rejected");
+                }
+                System.out.println("Claim processed.");
                 return;
             } catch (Exception e) {
-                System.out.println("Unable to process claim: "+e.getMessage()+" Please try again.");
+                System.out.println("Unable to process claim: "
+                        +e.getMessage()+" Please try again.");
             }
         }
     }

@@ -182,8 +182,10 @@ public class CustomerMenu {
     private void history() {
         List<Payment> list = paymentService.history(user.getId());
         List<String[]>rows = new ArrayList<>();
-        for (Payment p:list)rows.add(new String[] {
-            p.getId(), p.getPolicyId(), String.format("%.2f", p.getAmount()), p.getMethod().name(), p.getStatus().name(), String.valueOf(p.getPaidAt())
+        for (Payment p:list)
+            rows.add(new String[] {
+            p.getId(), p.getPolicyId(),
+                            String.format("%.2f", p.getAmount()), p.getMethod().name(), p.getStatus().name(), String.valueOf(p.getPaidAt())
         }
         );
         if (rows.isEmpty())TableFormatter.empty();
@@ -198,22 +200,29 @@ public class CustomerMenu {
                 Claim c = new Claim();
                 c.setCustomerId(user.getId());
                 c.setPolicyId(read("Policy ID"));
+
                 c.setAmount(Double.parseDouble(read("Claim Amount")));
                 c.setDescription(read("Description"));
+
                 claimService.submit(c);
-                System.out.println("Claim submitted successfully. Agent assigned: "+c.getAgentId());
+                System.out.println("Claim submitted successfully." +
+                        " Agent assigned: "+c.getAgentId());
                 return;
             } catch (NumberFormatException e) {
-                System.out.println("Claim amount must be numeric. Please try again.");
+                System.out.println("Claim amount must be " +
+                        "numeric. Please try again.");
             } catch (Exception e) {
-                System.out.println("Invalid claim: "+e.getMessage()+" Please try again.");
+                System.out.println("Invalid claim: "
+                        +e.getMessage()+" Please try again.");
             }
         }
     }
     private void myPolicies() throws DatabaseOperationException {
         List<String[]> r = new ArrayList<>();
-        for (Policy p:policyService.findByCustomer(user.getId()))r.add(new String[] {
-            p.getId(), p.getName(), p.getType().name(), String.format("%.2f", p.getPremium()), p.getPremiumStatus().name(), p.getAgentId(), p.getStatus().name()
+        for (Policy p:policyService.findByCustomer(user.getId()))
+            r.add(new String[] {
+            p.getId(), p.getName(), p.getType().name(),
+                            String.format("%.2f", p.getPremium()), p.getPremiumStatus().name(), p.getAgentId(), p.getStatus().name()
         }
         );
         if (r.isEmpty())TableFormatter.empty();
@@ -225,8 +234,11 @@ public class CustomerMenu {
     private void claims() {
         List<Claim>list = claimService.byCustomer(user.getId());
         List<String[]> r = new ArrayList<>();
-        for (Claim c:list)r.add(new String[] {
-            c.getId(), c.getPolicyId(), String.format("%.2f", c.getAmount()), c.getAgentId(), c.getStatus().name()
+        for (Claim c:list)
+            r.add(new String[] {
+            c.getId(), c.getPolicyId(),
+                            String.format("%.2f", c.getAmount()),
+                            c.getAgentId(), c.getStatus().name()
         }
         );
         if (r.isEmpty())TableFormatter.empty();

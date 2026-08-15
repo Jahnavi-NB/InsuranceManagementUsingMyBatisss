@@ -75,21 +75,27 @@ public class EmployeeMenu {
     }
     private void view() throws DatabaseOperationException {
         List<String[]> r = new ArrayList<>();
-        for (User u:userService.findAll())if (u.getRole() == Role.CUSTOMER)r.add(new String[] {
-            u.getId(), u.getName(), u.getUsername(), u.getEmail(), u.getPhone(), u.getStatus().name()
-        }
+        for (User u:userService.findAll())
+            if (u.getRole() == Role.CUSTOMER)
+                r.add(new String[] {
+            u.getId(), u.getName(), u.getUsername(),
+                                u.getEmail(), u.getPhone(), u.getStatus().name() }
         );
-        if (r.isEmpty())TableFormatter.empty();
-        else TableFormatter.print("CUSTOMERS", new String[] {
+        if (r.isEmpty())
+            TableFormatter.empty();
+
+        else
+            TableFormatter.print("CUSTOMERS", new String[] {
             "ID", "NAME", "USERNAME", "EMAIL", "PHONE", "STATUS"
-        }
-        , r);
+        }, r);
     }
     private void status() {
         while (true) {
             try {
+
                 userService.changeStatus(read("Customer ID"),
-                        Status.valueOf(read("Status ACTIVE/INACTIVE").toUpperCase()));
+                        Status.valueOf(read("Status ACTIVE/INACTIVE")
+                                .toUpperCase()));
                 System.out.println("Status updated successfully.");
                 return;
 
