@@ -75,6 +75,8 @@ public class EmployeeMenu {
     }
     private void view() throws DatabaseOperationException {
         List<String[]> r = new ArrayList<>();
+
+
         for (User u:userService.findAll())
             if (u.getRole() == Role.CUSTOMER)
                 r.add(new String[] {

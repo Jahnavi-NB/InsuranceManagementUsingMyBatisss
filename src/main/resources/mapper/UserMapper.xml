@@ -74,7 +74,8 @@
   INSERT INTO users
   (id, name, username, password, email, phone, role, status, age)
   VALUES
-  (#{id}, #{name}, #{username}, #{password}, #{email}, #{phone}, #{role}, #{status}, #{age})
+  (#{id}, #{name}, #{username}, #{password}, #{email}, #{phone},
+  #{role}, #{status}, #{age})
  </insert>
 
 

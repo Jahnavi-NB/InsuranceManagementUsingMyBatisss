@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.crimsonlogic.insurancemanagementsystem.mapper.ClaimMapper">
-<insert id="insert">INSERT INTO claims(id,policy_id,customer_id,agent_id,amount,description,status) VALUES(#{id},#{policyId},#{customerId},#{agentId},#{amount},#{description},#{status})</insert>
-<select id="findById" resultType="Claim">SELECT * FROM claims WHERE id=#{id}</select>
-<select id="findByAgent" resultType="Claim">SELECT * FROM claims WHERE agent_id=#{agentId} ORDER BY id</select>
-<select id="findByCustomer" resultType="Claim">SELECT * FROM claims WHERE customer_id=#{customerId} ORDER BY id</select>
-<update id="updateStatus">UPDATE claims SET status=#{status} WHERE id=#{id}</update>
+
+<insert id="insert">
+    INSERT INTO claims(id,policy_id,customer_id,
+    agent_id,
+    amount,description,status)
+    VALUES(#{id},#{policyId},#{customerId},
+    #{agentId},#{amount},#{description},#{status})
+</insert>
+
+<select id="findById" resultType="Claim">
+    SELECT * FROM claims
+    WHERE id=#{id}
+</select>
+
+<select id="findByAgent" resultType="Claim">
+    SELECT * FROM claims
+    WHERE agent_id=#{agentId}
+    ORDER BY id
+</select>
+
+<select id="findByCustomer" resultType="Claim">
+    SELECT * FROM claims
+    WHERE customer_id=#{customerId}
+    ORDER BY id
+</select>
+
+<update id="updateStatus">
+    UPDATE claims SET
+    status=#{status} WHERE id=#{id}
+</update>
+
     <select id="findLastClaimNumber"
             resultType="java.lang.Integer">
 
